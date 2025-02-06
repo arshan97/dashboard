@@ -1,10 +1,17 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import type { FlipRequest } from "@/types/dashboard"
+import { useState, useEffect } from "react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import type { FlipRequest } from "@/types/dashboard";
 
 const initialRequests: FlipRequest[] = [
   {
@@ -31,14 +38,22 @@ const initialRequests: FlipRequest[] = [
     status: "rejected",
     date: "2024-02-04T09:15:00Z",
   },
-]
+];
 
 export default function RequestsPage() {
-  const [requests] = useState<FlipRequest[]>(initialRequests)
+  const [requests, setRequests] = useState<FlipRequest[]>(initialRequests);
+
+  useEffect(() => {
+    // Load requests from localStorage
+    const storedRequests = JSON.parse(
+      localStorage.getItem("flipRequests") || "[]"
+    );
+    setRequests([...initialRequests, ...storedRequests]);
+  }, []);
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold">Requests</h1>
+      <h1 className="text-3xl font-bold">CDN Flip Requests</h1>
       <Card>
         <CardHeader>
           <CardTitle>Recent Requests</CardTitle>
@@ -60,22 +75,28 @@ export default function RequestsPage() {
                 <TableRow key={request.id}>
                   <TableCell>{request.id}</TableCell>
                   <TableCell>{request.services.join(", ")}</TableCell>
-                  <TableCell className="capitalize">{request.sourceProvider}</TableCell>
-                  <TableCell className="capitalize">{request.targetProvider}</TableCell>
+                  <TableCell className="capitalize">
+                    {request.sourceProvider}
+                  </TableCell>
+                  <TableCell className="capitalize">
+                    {request.targetProvider}
+                  </TableCell>
                   <TableCell>
                     <Badge
                       variant={
                         request.status === "approved"
                           ? "success"
                           : request.status === "rejected"
-                            ? "destructive"
-                            : "default"
+                          ? "destructive"
+                          : "default"
                       }
                     >
                       {request.status}
                     </Badge>
                   </TableCell>
-                  <TableCell>{new Date(request.date).toLocaleDateString()}</TableCell>
+                  <TableCell>
+                    {new Date(request.date).toLocaleDateString()}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -83,6 +104,5 @@ export default function RequestsPage() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
-
