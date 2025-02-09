@@ -1,20 +1,20 @@
-import type { Metadata } from "next"
-import { Inter } from "next/font/google"
-import "./globals.css"
-import { Sidebar } from "@/components/sidebar"
-import type React from "react" // Import React
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import "./globals.css";
+import { Sidebar } from "@/components/sidebar";
+import type React from "react"; // Import React
 
-const inter = Inter({ subsets: ["latin"] })
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Network & Firewall Dashboard",
   description: "Monitor and manage network services, DNS, and CDN",
-}
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en">
@@ -25,6 +25,5 @@ export default function RootLayout({
         </div>
       </body>
     </html>
-  )
+  );
 }
-

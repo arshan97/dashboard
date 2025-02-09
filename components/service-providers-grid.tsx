@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { StatusIndicator } from "./status-indicator"
-import type { ServiceProvider } from "@/types/dashboard"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { StatusIndicator } from "./status-indicator";
+import type { ServiceProvider } from "@/types/dashboard";
 
 const providers: ServiceProvider[] = [
   {
@@ -49,13 +49,15 @@ const providers: ServiceProvider[] = [
       { name: "IDEAL Mobile", code: "IDEAL-M", status: "healthy" },
     ],
   },
-]
+];
 
 export function ServiceProvidersGrid() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>End User Experience on different Service Providers in SG</CardTitle>
+        <CardTitle>
+          End User Experience on different Service Providers in SG
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -64,10 +66,15 @@ export function ServiceProvidersGrid() {
               <h3 className="font-semibold text-center">{provider.name}</h3>
               <div className="space-y-2">
                 {provider.services.map((service) => (
-                  <div key={service.code} className="flex items-center justify-between p-2 border rounded text-sm">
+                  <div
+                    key={service.code}
+                    className="flex items-center justify-between p-2 border rounded text-sm"
+                  >
                     <div className="flex flex-col">
                       <span>{service.name}</span>
-                      <span className="text-xs text-muted-foreground">({service.code})</span>
+                      <span className="text-xs text-muted-foreground">
+                        ({service.code})
+                      </span>
                     </div>
                     <StatusIndicator status={service.status} />
                   </div>
@@ -78,6 +85,5 @@ export function ServiceProvidersGrid() {
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }
-

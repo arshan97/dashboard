@@ -1,12 +1,16 @@
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 interface StatusIndicatorProps {
-  status: "healthy" | "warning" | "critical" | "unknown"
-  size?: "sm" | "md" | "lg"
-  className?: string
+  status: "healthy" | "warning" | "critical" | "unknown";
+  size?: "sm" | "md" | "lg";
+  className?: string;
 }
 
-export function StatusIndicator({ status, size = "md", className }: StatusIndicatorProps) {
+export function StatusIndicator({
+  status,
+  size = "md",
+  className,
+}: StatusIndicatorProps) {
   return (
     <div
       className={cn(
@@ -20,9 +24,8 @@ export function StatusIndicator({ status, size = "md", className }: StatusIndica
           "h-3 w-3": size === "md",
           "h-4 w-4": size === "lg",
         },
-        className,
+        className
       )}
     />
-  )
+  );
 }
-

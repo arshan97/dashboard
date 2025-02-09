@@ -1,9 +1,16 @@
-"use client"
+"use client";
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import type { FlipRequest } from "@/types/dashboard"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import type { FlipRequest } from "@/types/dashboard";
 
 const requests: FlipRequest[] = [
   {
@@ -22,7 +29,7 @@ const requests: FlipRequest[] = [
     status: "approved",
     date: "2024-02-05T15:45:00Z",
   },
-]
+];
 
 export function RequestsTable() {
   return (
@@ -47,28 +54,33 @@ export function RequestsTable() {
               <TableRow key={request.id}>
                 <TableCell>{request.id}</TableCell>
                 <TableCell>{request.services.join(", ")}</TableCell>
-                <TableCell className="capitalize">{request.sourceProvider}</TableCell>
-                <TableCell className="capitalize">{request.targetProvider}</TableCell>
+                <TableCell className="capitalize">
+                  {request.sourceProvider}
+                </TableCell>
+                <TableCell className="capitalize">
+                  {request.targetProvider}
+                </TableCell>
                 <TableCell>
                   <Badge
                     variant={
                       request.status === "approved"
                         ? "success"
                         : request.status === "rejected"
-                          ? "destructive"
-                          : "default"
+                        ? "destructive"
+                        : "default"
                     }
                   >
                     {request.status}
                   </Badge>
                 </TableCell>
-                <TableCell>{new Date(request.date).toLocaleDateString()}</TableCell>
+                <TableCell>
+                  {new Date(request.date).toLocaleDateString()}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </CardContent>
     </Card>
-  )
+  );
 }
-
