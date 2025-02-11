@@ -33,6 +33,15 @@ const initialLocations: GatewayLocation[] = [
   },
 ];
 
+const getOverallStatus = (
+  locations: GatewayLocation[]
+): "healthy" | "warning" | "critical" => {
+  const allProviders = locations.flatMap((l) => l.providers);
+  if (allProviders.some((p) => p.status === "critical")) return "critical";
+  if (allProviders.some((p) => p.status === "warning")) return "warning";
+  return "healthy";
+};
+
 export function DBSGateway() {
   const [locations, setLocations] = useState(initialLocations);
   const [pendingChange, setPendingChange] = useState<{
@@ -83,24 +92,32 @@ export function DBSGateway() {
     });
   };
 
+  const overallStatus = getOverallStatus(locations);
+
   return (
-    <Card className="h-[400px]">
-      <CardHeader>
-        <CardTitle>DBS Gateway</CardTitle>
+    <Card className="p-6">
+      <CardHeader className="flex flex-row items-center justify-between pb-2 px-0">
+        <CardTitle className="text-lg font-medium">DBS Gateway</CardTitle>
       </CardHeader>
-      <CardContent>
-        <div className="grid gap-6">
+      <CardContent className="px-0 pt-2">
+        <div className="space-y-4">
           {locations.map((location) => (
-            <div key={location.name} className="space-y-3">
-              <h3 className="font-semibold">{location.name}</h3>
-              <div className="grid gap-2">
+            <div key={location.name} className="border p-3 rounded-lg">
+              <h3 className="font-semibold mb-2">{location.name}</h3>
+              <div className="space-y-3">
                 {location.providers.map((provider) => (
                   <div
                     key={provider.name}
-                    className="flex items-center justify-between p-3 border rounded-md bg-gray-50"
+                    className={`flex items-center justify-between p-3 rounded-md border-2 ${
+                      provider.status === "healthy"
+                        ? "border-green-300"
+                        : provider.status === "warning"
+                        ? "border-yellow-300"
+                        : "border-red-300"
+                    }`}
                   >
-                    <div className="flex items-center gap-2">
-                      <StatusIndicator status={provider.status} />
+                    <div className="flex items-center gap-3">
+                      <StatusIndicator status={provider.status} size="md" />
                       <span>{provider.name}</span>
                     </div>
                     <Switch
