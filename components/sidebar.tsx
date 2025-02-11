@@ -15,7 +15,7 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <div className="w-64 bg-gray-100 h-screen p-4">
+    <div className="w-64 bg-card text-card-foreground h-screen p-4">
       <div className="flex items-center mb-8">
         <Shield className="h-6 w-6 mr-2" />
         <h1 className="text-lg font-semibold">Network Dashboard</h1>
@@ -26,8 +26,8 @@ export function Sidebar() {
             <Button
               variant="ghost"
               className={cn(
-                "w-full justify-start",
-                pathname === item.href && "bg-gray-200"
+                "w-full justify-start text-muted-foreground hover:text-foreground hover:bg-muted/50",
+                pathname === item.href && "bg-muted text-foreground"
               )}
             >
               <item.icon className="mr-2 h-4 w-4" />

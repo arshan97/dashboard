@@ -125,25 +125,25 @@ export default function DashboardPage() {
   const ddosStatus = getOverallStatus(ddosProtection);
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
+    <div className="container mx-auto p-6 space-y-6 text-foreground">
       <h1 className="text-3xl font-bold mb-6">Overview</h1>
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-        <Card className="p-6">
-          <CardHeader className="flex flex-row items-center justify-between pb-2 px-0">
+        <Card className="bg-card">
+          <CardHeader className="flex flex-row items-center justify-between pb-2 px-6">
             <CardTitle className="text-lg font-medium">DNS Records</CardTitle>
-            <Globe className="h-5 w-5 text-gray-500" />
+            <Globe className="h-5 w-5 text-gray-400" />
           </CardHeader>
-          <CardContent className="px-0 pt-2">
+          <CardContent className="px-6 pt-2">
             <div className="space-y-3">
               {dnsServices.map((service) => (
                 <div
                   key={service.code}
                   className={`flex items-center justify-between p-3 rounded-md border-2 ${
                     service.status === "healthy"
-                      ? "border-green-300"
+                      ? "border-green-500 animate-flash-border-green"
                       : service.status === "warning"
-                      ? "border-yellow-300"
-                      : "border-red-300"
+                      ? "border-yellow-500 animate-flash-border-yellow"
+                      : "border-red-500 animate-flash-border-red"
                   }`}
                 >
                   <span className="font-medium">{service.name}</span>
@@ -154,24 +154,24 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card className="p-6">
-          <CardHeader className="flex flex-row items-center justify-between pb-2 px-0">
+        <Card className="bg-card">
+          <CardHeader className="flex flex-row items-center justify-between pb-2 px-6">
             <CardTitle className="text-lg font-medium">
               DDoS Protection
             </CardTitle>
-            <Shield className="h-5 w-5 text-gray-500" />
+            <Shield className="h-5 w-5 text-gray-400" />
           </CardHeader>
-          <CardContent className="px-0 pt-2">
+          <CardContent className="px-6 pt-2">
             <div className="space-y-3">
               {ddosProtection.map((protection) => (
                 <div
                   key={protection.name}
                   className={`flex items-center justify-between p-3 rounded-md border-2 ${
                     protection.status === "healthy"
-                      ? "border-green-300"
+                      ? "border-green-500 animate-flash-border-green"
                       : protection.status === "warning"
-                      ? "border-yellow-300"
-                      : "border-red-300"
+                      ? "border-yellow-500 animate-flash-border-yellow"
+                      : "border-red-500 animate-flash-border-red"
                   }`}
                 >
                   <span className="font-medium">{protection.name}</span>
@@ -186,7 +186,7 @@ export default function DashboardPage() {
         <DBSGateway />
       </div>
 
-      <Card className="mt-6">
+      <Card className="mt-6 bg-card">
         <CardHeader>
           <CardTitle className="text-xl font-bold flex items-center gap-2">
             <Cloud className="h-6 w-6" />
@@ -197,9 +197,12 @@ export default function DashboardPage() {
           {flowStep === "initial" && (
             <div className="grid md:grid-cols-2 gap-6">
               {["akamai", "cloudflare"].map((provider) => (
-                <div key={provider} className="border rounded-lg p-6">
+                <div
+                  key={provider}
+                  className="border rounded-lg p-6 border-border bg-card"
+                >
                   <h3 className="text-lg font-semibold capitalize mb-4 flex items-center gap-2">
-                    <Activity className="h-5 w-5 text-gray-500" />
+                    <Activity className="h-5 w-5 text-gray-500 dark:text-gray-400" />
                     {provider}
                   </h3>
                   <div className="space-y-3">
@@ -210,16 +213,16 @@ export default function DashboardPage() {
                           key={service.code}
                           className={`flex items-center justify-between p-3 rounded-md border-2 ${
                             service.status === "healthy"
-                              ? "border-green-300"
+                              ? "border-green-500 animate-flash-border-green"
                               : service.status === "warning"
-                              ? "border-yellow-300"
-                              : "border-red-300"
+                              ? "border-yellow-500 animate-flash-border-yellow"
+                              : "border-red-500 animate-flash-border-red"
                           }`}
                         >
                           <div>
                             <div className="font-medium">{service.name}</div>
                             <div className="text-sm text-muted-foreground">
-                              ({service.code})
+                              {service.code}
                             </div>
                           </div>
                           <StatusIndicator status={service.status} size="md" />
@@ -255,7 +258,7 @@ export default function DashboardPage() {
                   .map((service) => (
                     <div
                       key={service.code}
-                      className="flex items-center justify-between p-3 border rounded-md"
+                      className="flex items-center justify-between p-3 border rounded-md border-border bg-card"
                     >
                       <div className="flex items-center space-x-4">
                         <Checkbox
@@ -267,7 +270,7 @@ export default function DashboardPage() {
                         <div>
                           <div className="font-medium">{service.name}</div>
                           <div className="text-sm text-muted-foreground">
-                            ({service.code})
+                            {service.code}
                           </div>
                         </div>
                       </div>
@@ -299,13 +302,13 @@ export default function DashboardPage() {
                 {selectedServicesDetails.map((service) => (
                   <div
                     key={service.code}
-                    className="flex items-center justify-between p-4 border rounded-lg"
+                    className="flex items-center justify-between p-4 border rounded-lg border-border bg-card"
                   >
                     <div className="flex items-center space-x-4">
                       <div>
                         <div className="font-medium">{service.name}</div>
                         <div className="text-sm text-muted-foreground">
-                          ({service.code})
+                          {service.code}
                         </div>
                       </div>
                     </div>
@@ -338,7 +341,7 @@ export default function DashboardPage() {
 
           {flowStep === "confirm" && (
             <Dialog open={true} onOpenChange={() => setFlowStep("review")}>
-              <DialogContent className="sm:max-w-[600px]">
+              <DialogContent className="sm:max-w-[600px] bg-card">
                 <DialogHeader>
                   <DialogTitle className="text-2xl">
                     Confirm CDN Flip Request

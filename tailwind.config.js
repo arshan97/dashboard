@@ -1,6 +1,26 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: ["class"],
+  darkMode: {
+    background: "#000000",
+    foreground: "#ffffff",
+    card: "#464646",
+    "card-foreground": "#ffffff",
+    popover: "#464646",
+    "popover-foreground": "#ffffff",
+    primary: "#ffffff",
+    "primary-foreground": "#000000",
+    secondary: "#737373",
+    "secondary-foreground": "#ffffff",
+    muted: "#737373",
+    "muted-foreground": "#a3a3a3",
+    accent: "#737373",
+    "accent-foreground": "#ffffff",
+    destructive: "#ff0000",
+    "destructive-foreground": "#ffffff",
+    border: "#737373",
+    input: "#737373",
+    ring: "#ffffff",
+  },
   content: [
     "./pages/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",
@@ -57,29 +77,46 @@ module.exports = {
         sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
-        pulseGreen: {
-          "0%, 100%": { opacity: 1 },
-          "50%": { opacity: 0.5 },
+        flashBorderGreen: {
+          "0%, 100%": { borderColor: "rgba(34, 197, 94, 0.2)" },
+          "50%": { borderColor: "rgba(34, 197, 94, 1)" },
         },
-        pulseYellow: {
-          "0%, 100%": { opacity: 1 },
-          "50%": { opacity: 0.5 },
+        flashBorderYellow: {
+          "0%, 100%": { borderColor: "rgba(234, 179, 8, 0.2)" },
+          "50%": { borderColor: "rgba(234, 179, 8, 1)" },
         },
-        pulseRed: {
-          "0%, 100%": { opacity: 1 },
-          "50%": { opacity: 0.3 },
+        flashBorderRed: {
+          "0%, 100%": { borderColor: "rgba(239, 68, 68, 0.2)" },
+          "50%": { borderColor: "rgba(239, 68, 68, 1)" },
         },
-        pulseGray: {
-          "0%, 100%": { opacity: 1 },
-          "50%": { opacity: 0.7 },
+        flashIconGreen: {
+          "0%, 100%": { color: "rgba(34, 197, 94, 0.5)" },
+          "50%": { color: "rgba(34, 197, 94, 1)" },
+        },
+        flashIconYellow: {
+          "0%, 100%": { color: "rgba(234, 179, 8, 0.5)" },
+          "50%": { color: "rgba(234, 179, 8, 1)" },
+        },
+        flashIconRed: {
+          "0%, 100%": { color: "rgba(239, 68, 68, 0.5)" },
+          "50%": { color: "rgba(239, 68, 68, 1)" },
         },
       },
       animation: {
-        "pulse-green": "pulseGreen 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
-        "pulse-yellow": "pulseYellow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
-        "pulse-red": "pulseRed 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
-        "pulse-gray": "pulseGray 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        "flash-border-green":
+          "flashBorderGreen 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        "flash-border-yellow":
+          "flashBorderYellow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        "flash-border-red":
+          "flashBorderRed 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        "flash-icon-green":
+          "flashIconGreen 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        "flash-icon-yellow":
+          "flashIconYellow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        "flash-icon-red":
+          "flashIconRed 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
       },
     },
   },
+  plugins: [require("tailwindcss-animate")],
 };

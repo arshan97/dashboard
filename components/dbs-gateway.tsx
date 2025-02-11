@@ -63,46 +63,38 @@ export function DBSGateway() {
     });
   };
 
-  const confirmChange = async () => {
+  const submitApprovalRequest = async () => {
     if (!pendingChange) return;
 
-    const newLocations = locations.map((location) => {
-      if (location.name === pendingChange.location) {
-        return {
-          ...location,
-          providers: location.providers.map((provider) => {
-            if (provider.name === pendingChange.provider) {
-              return { ...provider, enabled: pendingChange.enabled };
-            }
-            return provider;
-          }),
-        };
-      }
-      return location;
-    });
-
-    setLocations(newLocations);
-    setPendingChange(null);
+    // Simulating an API call to submit the approval request
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     toast({
-      title: "Gateway Status Updated",
-      description: `${pendingChange.provider} in ${
+      title: "Approval Request Submitted",
+      description: `Request to ${
+        pendingChange.enabled ? "enable" : "disable"
+      } ${pendingChange.provider} in ${
         pendingChange.location
-      } has been ${pendingChange.enabled ? "enabled" : "disabled"}.`,
+      } has been submitted for approval.`,
     });
+
+    setPendingChange(null);
   };
 
   const overallStatus = getOverallStatus(locations);
 
   return (
-    <Card className="p-6">
+    <Card className="p-6 bg-card text-card-foreground">
       <CardHeader className="flex flex-row items-center justify-between pb-2 px-0">
         <CardTitle className="text-lg font-medium">DBS Gateway</CardTitle>
       </CardHeader>
       <CardContent className="px-0 pt-2">
         <div className="space-y-4">
           {locations.map((location) => (
-            <div key={location.name} className="border p-3 rounded-lg">
+            <div
+              key={location.name}
+              className="border border-border p-3 rounded-lg"
+            >
               <h3 className="font-semibold mb-2">{location.name}</h3>
               <div className="space-y-3">
                 {location.providers.map((provider) => (
@@ -110,10 +102,10 @@ export function DBSGateway() {
                     key={provider.name}
                     className={`flex items-center justify-between p-3 rounded-md border-2 ${
                       provider.status === "healthy"
-                        ? "border-green-300"
+                        ? "border-green-500 animate-flash-border-green"
                         : provider.status === "warning"
-                        ? "border-yellow-300"
-                        : "border-red-300"
+                        ? "border-yellow-500 animate-flash-border-yellow"
+                        : "border-red-500 animate-flash-border-red"
                     }`}
                   >
                     <div className="flex items-center gap-3">
@@ -138,11 +130,11 @@ export function DBSGateway() {
         open={!!pendingChange}
         onOpenChange={() => setPendingChange(null)}
       >
-        <DialogContent>
+        <DialogContent className="bg-card text-card-foreground">
           <DialogHeader>
-            <DialogTitle>Confirm Gateway Change</DialogTitle>
+            <DialogTitle>Confirm Gateway Change Request</DialogTitle>
             <DialogDescription>
-              Are you sure you want to{" "}
+              Are you sure you want to request to{" "}
               {pendingChange?.enabled ? "enable" : "disable"}{" "}
               {pendingChange?.provider} in {pendingChange?.location}?
             </DialogDescription>
@@ -151,7 +143,7 @@ export function DBSGateway() {
             <Button variant="outline" onClick={() => setPendingChange(null)}>
               Cancel
             </Button>
-            <Button onClick={confirmChange}>Confirm</Button>
+            <Button onClick={submitApprovalRequest}>Submit for Approval</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

@@ -20,9 +20,9 @@ export function StatusIndicator({
   };
 
   const flashingAnimation = {
-    healthy: "animate-pulse-green",
-    warning: "animate-pulse-yellow",
-    critical: "animate-pulse-red",
+    healthy: "animate-flash-icon-green",
+    warning: "animate-flash-icon-yellow",
+    critical: "animate-flash-icon-red",
     unknown: "animate-pulse-gray",
   };
 
