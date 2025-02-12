@@ -123,78 +123,97 @@ export default function DashboardPage() {
 
   const dnsStatus = getOverallStatus(dnsServices);
   const ddosStatus = getOverallStatus(ddosProtection);
+  const akamaiStatus = getOverallStatus(
+    services.filter((s) => s.provider === "akamai")
+  );
+  const cloudflareStatus = getOverallStatus(
+    services.filter((s) => s.provider === "cloudflare")
+  );
 
   return (
-    <div className="container mx-auto p-6 space-y-6 text-foreground">
+    <div className="container mx-auto p-4 space-y-4 text-foreground">
       <h1 className="text-3xl font-bold mb-6">Overview</h1>
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-        <Card className="bg-card">
-          <CardHeader className="flex flex-row items-center justify-between pb-2 px-6">
-            <CardTitle className="text-lg font-medium">DNS Records</CardTitle>
-            <Globe className="h-5 w-5 text-gray-400" />
-          </CardHeader>
-          <CardContent className="px-6 pt-2">
-            <div className="space-y-3">
-              {dnsServices.map((service) => (
-                <div
-                  key={service.code}
-                  className={`flex items-center justify-between p-3 rounded-md border-2 ${
-                    service.status === "healthy"
-                      ? "border-green-500 animate-flash-border-green"
-                      : service.status === "warning"
-                      ? "border-yellow-500 animate-flash-border-yellow"
-                      : "border-red-500 animate-flash-border-red"
-                  }`}
-                >
-                  <span className="font-medium">{service.name}</span>
-                  <StatusIndicator status={service.status} size="md" />
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-card">
-          <CardHeader className="flex flex-row items-center justify-between pb-2 px-6">
-            <CardTitle className="text-lg font-medium">
-              DDoS Protection
-            </CardTitle>
-            <Shield className="h-5 w-5 text-gray-400" />
-          </CardHeader>
-          <CardContent className="px-6 pt-2">
-            <div className="space-y-3">
-              {ddosProtection.map((protection) => (
-                <div
-                  key={protection.name}
-                  className={`flex items-center justify-between p-3 rounded-md border-2 ${
-                    protection.status === "healthy"
-                      ? "border-green-500 animate-flash-border-green"
-                      : protection.status === "warning"
-                      ? "border-yellow-500 animate-flash-border-yellow"
-                      : "border-red-500 animate-flash-border-red"
-                  }`}
-                >
-                  <span className="font-medium">{protection.name}</span>
-                  <StatusIndicator status={protection.status} size="md" />
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        <L3DDoSProtection />
-        <DBSGateway />
-      </div>
-
-      <Card className="mt-6 bg-card">
+      {/* First row */}
+      <Card className="bg-card p-6">
         <CardHeader>
-          <CardTitle className="text-xl font-bold flex items-center gap-2">
-            <Cloud className="h-6 w-6" />
-            CDN Management
+          <CardTitle className="text-2xl font-bold">
+            Network Protection
           </CardTitle>
         </CardHeader>
-        <CardContent>
-          {flowStep === "initial" && (
+        <CardContent className="p-0">
+          <div className="grid gap-6 md:grid-cols-2">
+            {/* DNS Records */}
+            <Card className="bg-card">
+              <CardHeader className="flex flex-row items-center justify-between pb-2 px-6">
+                <CardTitle className="text-lg font-medium">
+                  DNS Records
+                </CardTitle>
+                <Globe className="h-5 w-5 text-gray-400" />
+              </CardHeader>
+              <CardContent className="px-6 pt-2">
+                <div className="space-y-3">
+                  {dnsServices.map((service) => (
+                    <div
+                      key={service.code}
+                      className={`flex items-center justify-between p-3 rounded-md border-2 ${
+                        service.status === "healthy"
+                          ? "border-green-500 animate-flash-border-green"
+                          : service.status === "warning"
+                          ? "border-yellow-500 animate-flash-border-yellow"
+                          : "border-red-500 animate-flash-border-red"
+                      }`}
+                    >
+                      <span className="font-medium">{service.name}</span>
+                      <StatusIndicator status={service.status} size="md" />
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* DDoS Protection */}
+            <Card className="bg-card">
+              <CardHeader className="flex flex-row items-center justify-between pb-2 px-6">
+                <CardTitle className="text-lg font-medium">
+                  DDoS Protection
+                </CardTitle>
+                <Shield className="h-5 w-5 text-gray-400" />
+              </CardHeader>
+              <CardContent className="px-6 pt-2">
+                <div className="space-y-3">
+                  {ddosProtection.map((protection) => (
+                    <div
+                      key={protection.name}
+                      className={`flex items-center justify-between p-3 rounded-md border-2 ${
+                        protection.status === "healthy"
+                          ? "border-green-500 animate-flash-border-green"
+                          : protection.status === "warning"
+                          ? "border-yellow-500 animate-flash-border-yellow"
+                          : "border-red-500 animate-flash-border-red"
+                      }`}
+                    >
+                      <span className="font-medium">{protection.name}</span>
+                      <StatusIndicator status={protection.status} size="md" />
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Second row */}
+      <div className="grid gap-6 md:grid-cols-2">
+        {/* CDN Management */}
+        <Card className="bg-card">
+          <CardHeader>
+            <CardTitle className="text-xl font-bold flex items-center gap-2">
+              <Cloud className="h-6 w-6" />
+              CDN Management
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
             <div className="grid md:grid-cols-2 gap-6">
               {["akamai", "cloudflare"].map((provider) => (
                 <div
@@ -204,6 +223,12 @@ export default function DashboardPage() {
                   <h3 className="text-lg font-semibold capitalize mb-4 flex items-center gap-2">
                     <Activity className="h-5 w-5 text-gray-500 dark:text-gray-400" />
                     {provider}
+                    <StatusIndicator
+                      status={
+                        provider === "akamai" ? akamaiStatus : cloudflareStatus
+                      }
+                      size="md"
+                    />
                   </h3>
                   <div className="space-y-3">
                     {services
@@ -244,29 +269,66 @@ export default function DashboardPage() {
                 </div>
               ))}
             </div>
-          )}
 
-          {flowStep === "select" && sourceProvider && targetProvider && (
-            <div>
-              <h3 className="text-lg font-semibold mb-4">
-                Select Services to Flip from {sourceProvider} to{" "}
-                {targetProvider}
-              </h3>
-              <div className="space-y-4">
-                {services
-                  .filter((s) => s.provider === sourceProvider)
-                  .map((service) => (
+            {flowStep === "select" && sourceProvider && targetProvider && (
+              <div className="mt-6">
+                <h3 className="text-lg font-semibold mb-4">
+                  Select Services to Flip from {sourceProvider} to{" "}
+                  {targetProvider}
+                </h3>
+                <div className="space-y-4">
+                  {services
+                    .filter((s) => s.provider === sourceProvider)
+                    .map((service) => (
+                      <div
+                        key={service.code}
+                        className="flex items-center justify-between p-3 border rounded-md border-border bg-card"
+                      >
+                        <div className="flex items-center space-x-4">
+                          <Checkbox
+                            checked={selectedServices.includes(service.code)}
+                            onCheckedChange={() =>
+                              handleServiceSelect(service.code)
+                            }
+                          />
+                          <div>
+                            <div className="font-medium">{service.name}</div>
+                            <div className="text-sm text-muted-foreground">
+                              {service.code}
+                            </div>
+                          </div>
+                        </div>
+                        <StatusIndicator status={service.status} size="md" />
+                      </div>
+                    ))}
+                </div>
+                <div className="mt-6 flex justify-end space-x-4">
+                  <Button
+                    variant="outline"
+                    onClick={() => setFlowStep("initial")}
+                  >
+                    Back
+                  </Button>
+                  <Button
+                    onClick={() => setFlowStep("review")}
+                    disabled={selectedServices.length === 0}
+                  >
+                    Review
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            {flowStep === "review" && sourceProvider && targetProvider && (
+              <div className="mt-6">
+                <h3 className="text-lg font-semibold mb-4">Review CDN Flip</h3>
+                <div className="space-y-4">
+                  {selectedServicesDetails.map((service) => (
                     <div
                       key={service.code}
-                      className="flex items-center justify-between p-3 border rounded-md border-border bg-card"
+                      className="flex items-center justify-between p-4 border rounded-lg border-border bg-card"
                     >
                       <div className="flex items-center space-x-4">
-                        <Checkbox
-                          checked={selectedServices.includes(service.code)}
-                          onCheckedChange={() =>
-                            handleServiceSelect(service.code)
-                          }
-                        />
                         <div>
                           <div className="font-medium">{service.name}</div>
                           <div className="text-sm text-muted-foreground">
@@ -274,123 +336,97 @@ export default function DashboardPage() {
                           </div>
                         </div>
                       </div>
-                      <StatusIndicator status={service.status} size="md" />
+                      <div className="flex items-center space-x-4">
+                        <div className="text-right">
+                          <div className="font-medium capitalize">
+                            {sourceProvider}
+                          </div>
+                          <StatusIndicator status={service.status} size="md" />
+                        </div>
+                        <ArrowRight className="h-6 w-6" />
+                        <div className="text-left">
+                          <div className="font-medium capitalize">
+                            {targetProvider}
+                          </div>
+                          <StatusIndicator status="unknown" size="md" />
+                        </div>
+                      </div>
                     </div>
                   ))}
-              </div>
-              <div className="mt-6 flex justify-end space-x-4">
-                <Button
-                  variant="outline"
-                  onClick={() => setFlowStep("initial")}
-                >
-                  Back
-                </Button>
-                <Button
-                  onClick={() => setFlowStep("review")}
-                  disabled={selectedServices.length === 0}
-                >
-                  Review
-                </Button>
-              </div>
-            </div>
-          )}
-
-          {flowStep === "review" && sourceProvider && targetProvider && (
-            <div>
-              <h3 className="text-lg font-semibold mb-4">Review CDN Flip</h3>
-              <div className="space-y-4">
-                {selectedServicesDetails.map((service) => (
-                  <div
-                    key={service.code}
-                    className="flex items-center justify-between p-4 border rounded-lg border-border bg-card"
-                  >
-                    <div className="flex items-center space-x-4">
-                      <div>
-                        <div className="font-medium">{service.name}</div>
-                        <div className="text-sm text-muted-foreground">
-                          {service.code}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex items-center space-x-4">
-                      <div className="text-right">
-                        <div className="font-medium capitalize">
-                          {sourceProvider}
-                        </div>
-                        <StatusIndicator status={service.status} size="md" />
-                      </div>
-                      <ArrowRight className="h-6 w-6" />
-                      <div className="text-left">
-                        <div className="font-medium capitalize">
-                          {targetProvider}
-                        </div>
-                        <StatusIndicator status="unknown" size="md" />
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-6 flex justify-end space-x-4">
-                <Button variant="outline" onClick={() => setFlowStep("select")}>
-                  Back
-                </Button>
-                <Button onClick={() => setFlowStep("confirm")}>Proceed</Button>
-              </div>
-            </div>
-          )}
-
-          {flowStep === "confirm" && (
-            <Dialog open={true} onOpenChange={() => setFlowStep("review")}>
-              <DialogContent className="sm:max-w-[600px] bg-card">
-                <DialogHeader>
-                  <DialogTitle className="text-2xl">
-                    Confirm CDN Flip Request
-                  </DialogTitle>
-                  <DialogDescription className="text-lg">
-                    You are about to submit a CDN flip request for the following
-                    services:
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="py-6">
-                  <h4 className="text-xl font-medium mb-4">
-                    Services to flip:
-                  </h4>
-                  <ul className="space-y-3">
-                    {selectedServicesDetails.map((service) => (
-                      <li
-                        key={service.code}
-                        className="text-lg flex items-center"
-                      >
-                        <span className="font-medium">{service.name}</span>
-                        <span className="text-muted-foreground ml-2">
-                          ({service.code})
-                        </span>
-                        <span className="mx-4 flex items-center text-blue-600">
-                          {sourceProvider}
-                          <ArrowRight className="h-6 w-6 mx-2" />
-                          {targetProvider}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
                 </div>
-                <DialogFooter>
+                <div className="mt-6 flex justify-end space-x-4">
                   <Button
                     variant="outline"
-                    onClick={() => setFlowStep("review")}
-                    className="text-lg"
+                    onClick={() => setFlowStep("select")}
                   >
                     Back
                   </Button>
-                  <Button onClick={submitFlipRequest} className="text-lg">
-                    Submit Flip Request
+                  <Button onClick={() => setFlowStep("confirm")}>
+                    Proceed
                   </Button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
-          )}
-        </CardContent>
-      </Card>
+                </div>
+              </div>
+            )}
+
+            {flowStep === "confirm" && (
+              <Dialog open={true} onOpenChange={() => setFlowStep("review")}>
+                <DialogContent className="sm:max-w-[600px] bg-card">
+                  <DialogHeader>
+                    <DialogTitle className="text-2xl">
+                      Confirm CDN Flip Request
+                    </DialogTitle>
+                    <DialogDescription className="text-lg">
+                      You are about to submit a CDN flip request for the
+                      following services:
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="py-6">
+                    <h4 className="text-xl font-medium mb-4">
+                      Services to flip:
+                    </h4>
+                    <ul className="space-y-3">
+                      {selectedServicesDetails.map((service) => (
+                        <li
+                          key={service.code}
+                          className="text-lg flex items-center"
+                        >
+                          <span className="font-medium">{service.name}</span>
+                          <span className="text-muted-foreground ml-2">
+                            ({service.code})
+                          </span>
+                          <span className="mx-4 flex items-center text-blue-600">
+                            {sourceProvider}
+                            <ArrowRight className="h-6 w-6 mx-2" />
+                            {targetProvider}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <DialogFooter>
+                    <Button
+                      variant="outline"
+                      onClick={() => setFlowStep("review")}
+                      className="text-lg"
+                    >
+                      Back
+                    </Button>
+                    <Button onClick={submitFlipRequest} className="text-lg">
+                      Submit Flip Request
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* L3 DDoS and DBS Gateway */}
+        <div className="grid gap-6 md:grid-cols-2">
+          <L3DDoSProtection />
+          <DBSGateway />
+        </div>
+      </div>
     </div>
   );
 }

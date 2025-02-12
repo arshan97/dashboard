@@ -84,33 +84,36 @@ export function DBSGateway() {
   const overallStatus = getOverallStatus(locations);
 
   return (
-    <Card className="p-6 bg-card text-card-foreground">
-      <CardHeader className="flex flex-row items-center justify-between pb-2 px-0">
-        <CardTitle className="text-lg font-medium">DBS Gateway</CardTitle>
+    <Card className="bg-card">
+      <CardHeader className="pb-2">
+        <CardTitle className="text-lg font-medium flex items-center gap-2">
+          DBS Gateway
+          <StatusIndicator status={overallStatus} size="sm" />
+        </CardTitle>
       </CardHeader>
-      <CardContent className="px-0 pt-2">
+      <CardContent className="pt-2">
         <div className="space-y-4">
           {locations.map((location) => (
             <div
               key={location.name}
-              className="border border-border p-3 rounded-lg"
+              className="border border-border p-2 rounded-lg"
             >
-              <h3 className="font-semibold mb-2">{location.name}</h3>
-              <div className="space-y-3">
+              <h3 className="font-semibold mb-2 text-sm">{location.name}</h3>
+              <div className="space-y-2">
                 {location.providers.map((provider) => (
                   <div
                     key={provider.name}
-                    className={`flex items-center justify-between p-3 rounded-md border-2 ${
+                    className={`flex items-center justify-between p-2 rounded-md border ${
                       provider.status === "healthy"
-                        ? "border-green-500 animate-flash-border-green"
+                        ? "border-green-500"
                         : provider.status === "warning"
-                        ? "border-yellow-500 animate-flash-border-yellow"
-                        : "border-red-500 animate-flash-border-red"
+                        ? "border-yellow-500"
+                        : "border-red-500"
                     }`}
                   >
-                    <div className="flex items-center gap-3">
-                      <StatusIndicator status={provider.status} size="md" />
-                      <span>{provider.name}</span>
+                    <div className="flex items-center gap-2">
+                      <StatusIndicator status={provider.status} size="sm" />
+                      <span className="text-sm">{provider.name}</span>
                     </div>
                     <Switch
                       checked={provider.enabled}
